@@ -6,4 +6,11 @@ public class Company
     public string? Name { get; set; }
     public DateTime Founded { get; set; }
     public string? Website { get; set; }
+
+    #region Relations
+
+    public List<User>? Users { get; set; }
+    public List<Skill>? Skills { get; set; }
+
+    #endregion Relations
 }

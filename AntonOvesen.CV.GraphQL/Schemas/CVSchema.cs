@@ -17,7 +17,7 @@ public class CVSchemaQuery : ObjectGraphType
     public CVSchemaQuery()
     {
         Field<CompanyType>("company")
-            .Argument<Guid>("id")
+            .Argument<NonNullGraphType<IdGraphType>>("id")
             .ResolveAsync(async context =>
             {
                 using var scope = context.RequestServices!.CreateScope();
