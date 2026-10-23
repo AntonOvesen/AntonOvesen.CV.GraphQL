@@ -9,7 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGraphQL(builder =>
 {
-    builder.AddSchema<WhatSchema>().AddSystemTextJson();
+    builder.AddSystemTextJson()
+        //.AddSchema<WhatSchema>()
+        .AddAutoSchema<SomeOtherSchema>();
 });
 
 var app = builder.Build();
@@ -26,6 +28,11 @@ app.UseGraphQLGraphiQL(
     });
 
 app.Run();
+
+public class SomeOtherSchema
+{
+    public static string GetHelloWorld() => "Hello World!";
+}
 public class WhatSchema : Schema
 {
     public WhatSchema()
