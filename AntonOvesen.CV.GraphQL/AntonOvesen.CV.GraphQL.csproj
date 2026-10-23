@@ -10,4 +10,8 @@
     <PackageReference Include="GraphQL.Server.All" Version="8.3.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AntonOvesen.CV.GraphQL.Core\AntonOvesen.CV.GraphQL.Core.csproj" />
+  </ItemGroup>
+
 </Project>
