@@ -5,9 +5,12 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure;
 
 public class CVContext : DbContext
 {
+    public CVContext(DbContextOptions<CVContext> options) : base(options)
+    {
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<Skill> Skills { get; set; }
-
     public DbSet<Company> Companies { get; set; }
     public DbSet<Education> Educations { get; set; }
     public DbSet<Institution> Institutions { get; set; }
