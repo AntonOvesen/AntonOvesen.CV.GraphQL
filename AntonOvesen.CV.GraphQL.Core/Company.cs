@@ -12,7 +12,7 @@ public class Company
 
     #region Relations
 
-    public required User Users { get; set; }
+    public User? User { get; set; }
 
     public List<Skill>? Skills { get; set; }
 

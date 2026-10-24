@@ -11,5 +11,6 @@ public class CompanyType : ObjectGraphType<Company>
         Field(x => x.Name).Description("The current name of the company");
         Field(x => x.Founded).Description("When was the company founded");
         Field(x => x.Website).Description("Link to the companies website");
+        // TODO: flesh out relations and rest of fields
     }
 }

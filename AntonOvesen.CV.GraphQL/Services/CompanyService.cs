@@ -17,7 +17,7 @@ public class CompanyService : ICompanyService
             Id = companyId,
             Name = "Tryg CardsAffinity",
             Founded = DateTime.Parse("2002-01-01"),
-            Website = "tryg.dk"
+            Website = "tryg.dk",
         });
     }
 }

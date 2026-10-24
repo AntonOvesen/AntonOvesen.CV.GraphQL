@@ -1,4 +1,5 @@
-﻿using AntonOvesen.CV.GraphQL.Services;
+﻿using AntonOvesen.CV.GraphQL.Core;
+using AntonOvesen.CV.GraphQL.Services;
 using GraphQL;
 using GraphQL.Types;
 
@@ -16,7 +17,7 @@ public class CVSchemaQuery : ObjectGraphType
 {
     public CVSchemaQuery()
     {
-        Field<CompanyType>("company")
+        Field<CompanyType>("companyById")
             .Argument<NonNullGraphType<IdGraphType>>("id")
             .ResolveAsync(async context =>
             {
@@ -25,5 +26,11 @@ public class CVSchemaQuery : ObjectGraphType
                 var id = context.GetArgument<Guid>("id");
                 return await services.GetRequiredService<ICompanyService>().GetCompany(id);
             });
+
+        Field<CompanyType>("company");
+        Field<EducationType>("education");
+        Field<ProjectType>("project");
+        Field<SkillType>("skill");
+        Field<UserType>("user");
     }
 }
