@@ -12,6 +12,7 @@ builder.Services.AddGraphQL(builder =>
 });
 
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IEducationService, EducationService>();
 
 var app = builder.Build();
 
