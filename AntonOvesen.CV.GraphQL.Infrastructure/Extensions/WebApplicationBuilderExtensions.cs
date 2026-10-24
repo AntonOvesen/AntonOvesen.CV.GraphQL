@@ -10,4 +10,4 @@ public static class WebApplicationBuilderExtensions
     {
         return services.AddMySql<CVContext>(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("8.0.26"));
     }
-}
+} 
