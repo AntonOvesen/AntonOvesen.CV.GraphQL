@@ -10,9 +10,6 @@ public class Skill
 
     public Guid UserId { get; set; }
     public User? User { get; set; }
-    public List<Project>? Projects { get; set; }
-    public List<Education>? Educations { get; set; }
-    public List<Company>? Companies { get; set; }
 
     #endregion Relations
 }

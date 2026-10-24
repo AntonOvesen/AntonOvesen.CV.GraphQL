@@ -12,6 +12,9 @@ public class ProjectType : ObjectGraphType<Project>
         Field(x => x.Title).Description("Title or name of the project");
         Field(x => x.Description).Description("Describes the project");
         Field(x => x.Ref).Description("Link or other reference to the project");
+
+        #region Relations
+
         Field(x => x.User, typeof(UserType))
             .Description("Whom his project belongs to")
             .ResolveAsync(ctx =>
@@ -19,6 +22,7 @@ public class ProjectType : ObjectGraphType<Project>
                 var loader = ctx.RequestServices!.GetRequiredService<UserDataLoader>();
                 return loader.LoadAsync(ctx.Source.UserId);
             });
-        Field(x => x.Skills, typeof(ListGraphType<SkillType>)).Description("Skills the user aquired or used for this project");
+
+        #endregion Relations
     }
 }

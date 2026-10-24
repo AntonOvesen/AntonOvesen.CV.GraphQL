@@ -11,7 +11,6 @@ public class Project
 
     public Guid UserId { get; set; }
     public User? User { get; set; }
-    public List<Skill>? Skills { get; set; }
 
     #endregion Relations
 }

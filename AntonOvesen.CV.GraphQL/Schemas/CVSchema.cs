@@ -37,13 +37,5 @@ public class CVSchemaQuery : ObjectGraphType
         // Projects
         // Skills
         // Phones
-
-        //Field<ListGraphType<EducationType>>("education").ResolveAsync(async ctx =>
-        //{
-        //    using var scope = ctx.RequestServices!.CreateScope();
-        //    var services = scope.ServiceProvider;
-        //    var education = await services.GetRequiredService<IEducationService>().GetEducations(ctx.CancellationToken);
-        //    return education;
-        //});
     }
 }

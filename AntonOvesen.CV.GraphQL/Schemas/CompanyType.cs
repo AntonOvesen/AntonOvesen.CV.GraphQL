@@ -21,7 +21,5 @@ public class CompanyType : ObjectGraphType<Company>
                 var loader = ctx.RequestServices!.GetRequiredService<UserDataLoader>();
                 return loader.LoadAsync(ctx.Source.UserId);
             });
-        Field(x => x.Skills, typeof(ListGraphType<SkillType>))
-            .Description("Skills aquired and applied at this company");
     }
 }

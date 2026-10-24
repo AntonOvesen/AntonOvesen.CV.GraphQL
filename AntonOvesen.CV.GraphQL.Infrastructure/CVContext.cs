@@ -24,10 +24,6 @@ public class CVContext : DbContext
         modelBuilder.Entity<User>().HasMany(x => x.Educations).WithOne(x => x.User).HasForeignKey(x => x.UserId);
         modelBuilder.Entity<User>().HasMany(x => x.Companies).WithOne(x => x.User).HasForeignKey(x => x.UserId);
 
-        modelBuilder.Entity<Skill>().HasMany(x => x.Projects).WithMany(x => x.Skills);
-        modelBuilder.Entity<Skill>().HasMany(x => x.Educations).WithMany(x => x.Skills);
-        modelBuilder.Entity<Skill>().HasMany(x => x.Companies).WithMany(x => x.Skills);
-
-        modelBuilder.Entity<Education>().HasOne(x => x.Institution).WithMany(x => x.Educations).HasForeignKey(x => x.InstitutionId);
+        modelBuilder.Entity<Education>().HasOne(x => x.Institution);
     }
 }
