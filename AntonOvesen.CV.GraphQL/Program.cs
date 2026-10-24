@@ -1,4 +1,3 @@
-using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using AntonOvesen.CV.GraphQL.Infrastructure.Extensions;
 using AntonOvesen.CV.GraphQL.Schemas;
 using GraphQL.Server.Ui.GraphiQL;
