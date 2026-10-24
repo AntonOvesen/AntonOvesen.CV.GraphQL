@@ -59,7 +59,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("InstitutionId")
+                    b.Property<Guid>("InstitutionId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Level")
@@ -228,7 +228,9 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.Institution", "Institution")
                         .WithMany("Educations")
-                        .HasForeignKey("InstitutionId");
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Educations")

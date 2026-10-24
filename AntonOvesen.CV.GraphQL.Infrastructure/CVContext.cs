@@ -28,6 +28,6 @@ public class CVContext : DbContext
         modelBuilder.Entity<Skill>().HasMany(x => x.Educations).WithMany(x => x.Skills);
         modelBuilder.Entity<Skill>().HasMany(x => x.Companies).WithMany(x => x.Skills);
 
-        modelBuilder.Entity<Education>().HasOne(x => x.Institution).WithMany(x => x.Educations);
+        modelBuilder.Entity<Education>().HasOne(x => x.Institution).WithMany(x => x.Educations).HasForeignKey(x => x.InstitutionId);
     }
 }

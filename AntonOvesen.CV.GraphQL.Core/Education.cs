@@ -8,6 +8,7 @@ public class Education
 
     #region Relations
 
+    public Guid InstitutionId { get; set; }
     public Institution? Institution { get; set; }
     public Guid UserId { get; set; }
     public User? User { get; set; }
