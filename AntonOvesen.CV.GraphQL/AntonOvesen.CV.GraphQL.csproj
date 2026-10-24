@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AntonOvesen.CV.GraphQL.Core\AntonOvesen.CV.GraphQL.Core.csproj" />
+    <ProjectReference Include="..\AntonOvesen.CV.GraphQL.Infrastructure\AntonOvesen.CV.GraphQL.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

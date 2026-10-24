@@ -4,5 +4,6 @@
     <Project Path="AntonOvesen.CV.GraphQL.UnitTests/AntonOvesen.CV.GraphQL.UnitTests.csproj" Id="f3d2c4e6-598d-42c1-9e23-65c49604293f" />
   </Folder>
   <Project Path="AntonOvesen.CV.GraphQL.Core/AntonOvesen.CV.GraphQL.Core.csproj" Id="4a369976-3b4f-40f4-9c43-0150ef12d1d0" />
+  <Project Path="AntonOvesen.CV.GraphQL.Infrastructure/AntonOvesen.CV.GraphQL.Infrastructure.csproj" Id="fe139637-19b7-4eba-b0f0-7175cd9f4f7f" />
   <Project Path="AntonOvesen.CV.GraphQL/AntonOvesen.CV.GraphQL.csproj" />
 </Solution>
