@@ -23,6 +23,14 @@ public class CVSchemaQuery : ObjectGraphType
                 return loader.LoadAsync(ctx.GetArgument<Guid>("id"));
             });
 
+        Field<ListGraphType<UserType>>("users")
+            .Argument<string>("searchTerm")
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<UserSearchDataLoader>();
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+            });
+
         // TODO:
         // Companys
         // Educations

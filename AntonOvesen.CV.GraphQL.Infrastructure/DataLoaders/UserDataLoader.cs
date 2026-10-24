@@ -18,13 +18,33 @@ public class UserDataLoader(CVContext context) : DataLoaderBase<Guid, User>
     }
 }
 
+public class UserSearchDataLoader(CVContext context) : DataLoaderBase<string, List<User>>
+{
+    protected override async Task FetchAsync(IEnumerable<DataLoaderPair<string, List<User>>> list, CancellationToken cancellationToken)
+    {
+        // Todo: optimize maybe?
+        // If you can mark the matches based on what search they match, then group by that.
+        // This can be one query
+        foreach (var item in list)
+        {
+            var searchTerm = $"%{item.Key}%";
+            var usersMatches = await context.Users
+                .Where(user =>
+                    EF.Functions.Like(user.FirstName, searchTerm) ||
+                    EF.Functions.Like(user.LastName, searchTerm))
+                .ToListAsync(cancellationToken);
+
+            item.SetResult(usersMatches);
+        }
+    }
+}
+
 public class UserSkillsDataLoader(CVContext context) : DataLoaderBase<Guid, List<Skill>?>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, List<Skill>?>> list, CancellationToken cancellationToken)
     {
         var ids = list.Select(x => x.Key);
         var data = await context.Skills
-            .Include(x => x.User)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 
@@ -43,7 +63,6 @@ public class UserEducationDataLoader(CVContext context) : DataLoaderBase<Guid, L
     {
         var ids = list.Select(x => x.Key);
         var data = await context.Educations
-            .Include(x => x.User)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 
@@ -62,7 +81,6 @@ public class UserCompanyDataLoader(CVContext context) : DataLoaderBase<Guid, Lis
     {
         var ids = list.Select(x => x.Key);
         var data = await context.Companies
-            .Include(x => x.User)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 
@@ -81,7 +99,6 @@ public class UserProjectDataLoader(CVContext context) : DataLoaderBase<Guid, Lis
     {
         var ids = list.Select(x => x.Key);
         var data = await context.Projects
-            .Include(x => x.User)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 

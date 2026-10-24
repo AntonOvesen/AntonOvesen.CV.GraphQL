@@ -15,6 +15,7 @@ public static class IServiceCollectionExtensions
     public static IServiceCollection AddDataLoaders(this IServiceCollection services)
     {
         services.AddScoped<UserDataLoader>();
+        services.AddScoped<UserSearchDataLoader>();
         services.AddScoped<UserCompanyDataLoader>();
         services.AddScoped<UserProjectDataLoader>();
         services.AddScoped<UserEducationDataLoader>();
