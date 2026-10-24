@@ -16,13 +16,11 @@ public static class IServiceCollectionExtensions
     {
         services.AddScoped<UserDataLoader>();
         services.AddScoped<UserSearchDataLoader>();
+        services.AddScoped<UserSkillsDataLoader>();
+        services.AddScoped<UserEducationDataLoader>();
         services.AddScoped<UserCompanyDataLoader>();
         services.AddScoped<UserProjectDataLoader>();
-        services.AddScoped<UserEducationDataLoader>();
-        services.AddScoped<UserSkillsDataLoader>();
-
-        
 
         return services;
     }
-} 
+}

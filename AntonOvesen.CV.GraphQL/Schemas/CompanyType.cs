@@ -14,6 +14,9 @@ public class CompanyType : ObjectGraphType<Company>
         Field(x => x.Website).Description("Link to the companies website");
         Field(x => x.From).Description("When the user started at this company");
         Field(x => x.To).Description("When the user departed the company. Empty if active employer");
+
+        #region Relations
+
         Field(x => x.User, typeof(UserType))
             .Description("User employed at this company")
             .ResolveAsync(ctx =>
@@ -21,5 +24,7 @@ public class CompanyType : ObjectGraphType<Company>
                 var loader = ctx.RequestServices!.GetRequiredService<UserDataLoader>();
                 return loader.LoadAsync(ctx.Source.UserId);
             });
+
+        #endregion Relations
     }
 }

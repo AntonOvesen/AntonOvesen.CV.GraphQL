@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
 {
     [DbContext(typeof(CVContext))]
-    [Migration("20261024155736_Test")]
-    partial class Test
+    [Migration("20261024181635_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                     b.Property<DateTime?>("To")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Website")
@@ -62,7 +62,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("InstitutionId")
+                    b.Property<Guid>("InstitutionId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Level")
@@ -71,7 +71,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -117,7 +117,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -140,7 +140,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -171,56 +171,13 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CompanySkill", b =>
-                {
-                    b.Property<Guid>("CompaniesId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("SkillsId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("CompaniesId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("CompanySkill");
-                });
-
-            modelBuilder.Entity("EducationSkill", b =>
-                {
-                    b.Property<Guid>("EducationsId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("SkillsId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("EducationsId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("EducationSkill");
-                });
-
-            modelBuilder.Entity("ProjectSkill", b =>
-                {
-                    b.Property<Guid>("ProjectsId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("SkillsId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("ProjectsId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("ProjectSkill");
-                });
-
             modelBuilder.Entity("AntonOvesen.CV.GraphQL.Core.Company", b =>
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Companies")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -228,12 +185,16 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
             modelBuilder.Entity("AntonOvesen.CV.GraphQL.Core.Education", b =>
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.Institution", "Institution")
-                        .WithMany("Educations")
-                        .HasForeignKey("InstitutionId");
+                        .WithMany()
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Educations")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Institution");
 
@@ -244,7 +205,9 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -253,7 +216,9 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Skills")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -282,56 +247,6 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         });
 
                     b.Navigation("Phone");
-                });
-
-            modelBuilder.Entity("CompanySkill", b =>
-                {
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Company", null)
-                        .WithMany()
-                        .HasForeignKey("CompaniesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EducationSkill", b =>
-                {
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Education", null)
-                        .WithMany()
-                        .HasForeignKey("EducationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProjectSkill", b =>
-                {
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AntonOvesen.CV.GraphQL.Core.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("AntonOvesen.CV.GraphQL.Core.Institution", b =>
-                {
-                    b.Navigation("Educations");
                 });
 
             modelBuilder.Entity("AntonOvesen.CV.GraphQL.Core.User", b =>

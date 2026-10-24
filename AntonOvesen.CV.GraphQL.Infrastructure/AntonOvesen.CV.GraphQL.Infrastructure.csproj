@@ -19,4 +19,8 @@
 		<ProjectReference Include="..\AntonOvesen.CV.GraphQL.Core\AntonOvesen.CV.GraphQL.Core.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Migrations\" />
+	</ItemGroup>
+
 </Project>
