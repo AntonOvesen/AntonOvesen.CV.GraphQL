@@ -1,5 +1,6 @@
-﻿using GraphQL.Types;
-using AntonOvesen.CV.GraphQL.Core;
+﻿using AntonOvesen.CV.GraphQL.Core;
+using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
+using GraphQL.Types;
 
 namespace AntonOvesen.CV.GraphQL.Schemas;
 
@@ -14,10 +15,13 @@ public class CompanyType : ObjectGraphType<Company>
         Field(x => x.From).Description("When the user started at this company");
         Field(x => x.To).Description("When the user departed the company. Empty if active employer");
         Field(x => x.User, typeof(UserType))
-            .Resolve(ctx => ctx.Source.User)
-            .Description("User employed at this company");
+            .Description("User employed at this company")
+            .ResolveAsync(ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<UserDataLoader>();
+                return loader.LoadAsync(ctx.Source.UserId);
+            });
         Field(x => x.Skills, typeof(ListGraphType<SkillType>))
-            .Resolve(ctx => ctx.Source.Skills)
             .Description("Skills aquired and applied at this company");
     }
 }

@@ -63,6 +63,7 @@ public class UserEducationDataLoader(CVContext context) : DataLoaderBase<Guid, L
     {
         var ids = list.Select(x => x.Key);
         var data = await context.Educations
+            .Include(x => x.Institution)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 
