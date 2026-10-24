@@ -10,9 +10,9 @@ public class SkillType : ObjectGraphType<Skill>
         Field(x => x.Id).Description("Unique identifier");
         Field(x => x.Title).Description("Short name of the skill");
         Field(x => x.Description).Description("Longer explination or description of the skill");
-        //Field(x => x.User).Description("Who has this skill");
-        //Field(x => x.Projects).Description("Projects this skill was used for");
-        //Field(x => x.Educations).Description("Educations where this skill was honed");
-        //Field(x => x.Companies).Description("Companies wher this skill was honed or applied");
+        Field(x => x.User, typeof(UserType)).Description("Who has this skill");
+        Field(x => x.Projects, typeof(ListGraphType<ProjectType>)).Description("Projects this skill was used for");
+        Field(x => x.Educations, typeof(ListGraphType<EducationType>)).Description("Educations where this skill was honed");
+        Field(x => x.Companies, typeof(ListGraphType<CompanyType>)).Description("Companies wher this skill was honed or applied");
     }
 }

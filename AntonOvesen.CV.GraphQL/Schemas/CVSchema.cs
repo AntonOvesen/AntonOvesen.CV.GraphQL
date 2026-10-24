@@ -17,26 +17,37 @@ public class CVSchemaQuery : ObjectGraphType
 {
     public CVSchemaQuery()
     {
-        //Field<CompanyType>("companyById")
-        //    .Argument<NonNullGraphType<IdGraphType>>("id")
-        //    .ResolveAsync(async context =>
-        //    {
-        //        using var scope = context.RequestServices!.CreateScope();
-        //        var services = scope.ServiceProvider;
-        //        var id = context.GetArgument<Guid>("id");
-        //        return await services.GetRequiredService<ICompanyService>().GetCompany(id);
-        //    });
+        Field<UserType>("user")
+            .Argument<NonNullGraphType<IdGraphType>>("id")
+            .ResolveAsync(async ctx =>
+            {
+                using var scope = ctx.RequestServices!.CreateScope();
+                var id = ctx.GetArgument<Guid>("id");
 
-        //Field<CompanyType>("company");
-        Field<ListGraphType<EducationType>>("education").ResolveAsync(async ctx =>
-        {
-            using var scope = ctx.RequestServices!.CreateScope();
-            var services = scope.ServiceProvider;
-            var education = await services.GetRequiredService<IEducationService>().GetEducations(ctx.CancellationToken);
-            return education;
-        });
-        //Field<ProjectType>("project");
-        //Field<SkillType>("skill");
-        //Field<UserType>("user");
+                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                var user = await userService.GetUser(id, ctx.CancellationToken);
+                return user;
+            });
+
+        Field<ListGraphType<UserType>>("users")
+            .Argument<string>("searchTerm")
+            .ResolveAsync(async ctx =>
+            {
+                using var scope = ctx.RequestServices!.CreateScope();
+                var searchTerm = ctx.GetArgument<string>("searchTerm");
+
+                var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+                var users = await userService.SearchUsers(searchTerm, ctx.CancellationToken);
+                return users;
+            });
+
+        //Field<ListGraphType<EducationType>>("education").ResolveAsync(async ctx =>
+        //{
+        //    using var scope = ctx.RequestServices!.CreateScope();
+        //    var services = scope.ServiceProvider;
+        //    var education = await services.GetRequiredService<IEducationService>().GetEducations(ctx.CancellationToken);
+        //    return education;
+        //});
+
     }
 }

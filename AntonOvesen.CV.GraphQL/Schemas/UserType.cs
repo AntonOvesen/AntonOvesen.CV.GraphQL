@@ -11,11 +11,11 @@ namespace AntonOvesen.CV.GraphQL.Schemas
             Field(x => x.FirstName).Description("Given name");
             Field(x => x.LastName).Description("Surname, or remaining names");
             Field(x => x.Email).Description("Email contact information");
-            //Field(x => x.Phone).Description("Phone contact information");
-            //Field(x => x.Educations).Description("Educations this user attendend");
-            //Field(x => x.Companies).Description("Companies this user worked for");
-            //Field(x => x.Skills).Description("Skills this user has aquired");
-            //Field(x => x.Projects).Description("Projects this user has created or worked on");
+            Field(x => x.Phone, typeof(PhoneType)).Description("Phone contact information");
+            Field(x => x.Educations, typeof(ListGraphType<EducationType>)).Description("Educations this user attendend");
+            Field(x => x.Companies, typeof(ListGraphType<CompanyType>)).Description("Companies this user worked for");
+            Field(x => x.Skills, typeof(ListGraphType<SkillType>)).Description("Skills this user has aquired");
+            Field(x => x.Projects, typeof(ListGraphType<ProjectType>)).Description("Projects this user has created or worked on");
         }
     }
 
