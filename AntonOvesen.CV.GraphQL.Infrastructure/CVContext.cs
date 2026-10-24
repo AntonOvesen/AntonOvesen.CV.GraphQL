@@ -19,10 +19,10 @@ public class CVContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().OwnsOne(x => x.Phone);
-        modelBuilder.Entity<User>().HasMany(x => x.Skills).WithOne(x => x.User);
-        modelBuilder.Entity<User>().HasMany(x => x.Projects).WithOne(x => x.User);
-        modelBuilder.Entity<User>().HasMany(x => x.Educations).WithOne(x => x.User);
-        modelBuilder.Entity<User>().HasMany(x => x.Companies).WithOne(x => x.User);
+        modelBuilder.Entity<User>().HasMany(x => x.Skills).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+        modelBuilder.Entity<User>().HasMany(x => x.Projects).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+        modelBuilder.Entity<User>().HasMany(x => x.Educations).WithOne(x => x.User).HasForeignKey(x => x.UserId);
+        modelBuilder.Entity<User>().HasMany(x => x.Companies).WithOne(x => x.User).HasForeignKey(x => x.UserId);
 
         modelBuilder.Entity<Skill>().HasMany(x => x.Projects).WithMany(x => x.Skills);
         modelBuilder.Entity<Skill>().HasMany(x => x.Educations).WithMany(x => x.Skills);

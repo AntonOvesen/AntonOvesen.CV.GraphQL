@@ -9,6 +9,7 @@ public class Education
     #region Relations
 
     public Institution? Institution { get; set; }
+    public Guid UserId { get; set; }
     public User? User { get; set; }
     public List<Skill>? Skills { get; set; }
 

@@ -40,7 +40,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                     b.Property<DateTime?>("To")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Website")
@@ -137,7 +137,7 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
@@ -217,7 +217,9 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Companies")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -254,7 +256,9 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                 {
                     b.HasOne("AntonOvesen.CV.GraphQL.Core.User", "User")
                         .WithMany("Skills")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

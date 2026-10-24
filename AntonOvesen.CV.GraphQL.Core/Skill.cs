@@ -8,6 +8,7 @@ public class Skill
 
     #region Relations
 
+    public Guid UserId { get; set; }
     public User? User { get; set; }
     public List<Project>? Projects { get; set; }
     public List<Education>? Educations { get; set; }
