@@ -4,8 +4,9 @@ public class User
 {
     public Guid Id { get; set; }
     public required string FirstName { get; set; }
-
     public string? LastName { get; set; }
+    public string? Email { get; set; }
+    public Phone? Phone { get; set; }
 
     #region Relations
 
@@ -15,4 +16,10 @@ public class User
     public List<Project>? Projects { get; set; }
 
     #endregion Relations
+}
+
+public class Phone
+{
+    public required string Number { get; set; }
+    public required string CountryCode { get; set; }
 }

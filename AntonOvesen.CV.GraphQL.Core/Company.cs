@@ -7,9 +7,13 @@ public class Company
     public DateTime Founded { get; set; }
     public string? Website { get; set; }
 
+    public DateTime From { get; set; }
+    public DateTime? To { get; set; }
+
     #region Relations
 
-    public List<User>? Users { get; set; }
+    public required User Users { get; set; }
+
     public List<Skill>? Skills { get; set; }
 
     #endregion Relations

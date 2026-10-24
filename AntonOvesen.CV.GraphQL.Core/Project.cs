@@ -9,11 +9,7 @@ public class Project
 
     #region Relations
 
-    public List<User>? Users { get; set; }
-
-    // Note this doesnt really make sense.
-    // Skill needs to be more clearly defined or tied to a user maybe?
-    // Or one-way relation between skill and their origin maybe.. :think:
+    public required User User { get; set; }
     public List<Skill>? Skills { get; set; }
 
     #endregion Relations
