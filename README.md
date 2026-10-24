@@ -1,11 +1,16 @@
 # AntonOvesen.CV.GraphQL
 Simple graph ql backend
 
+## TODO
+- Add all the mutations so you can setup the ressources
+- Fill out the seeding and query sections to help testing
+- Add section about hosting. (maybe add docker compose?)
+
 # Seeding
 ```graphql
 
-mutation ($user:UserInput!) {
-  createUser(user: $user) {
+mutation ($userOne:UserInput!) {
+  createUser(user: $userOne) {
     firstName
     lastName
     email
@@ -13,8 +18,11 @@ mutation ($user:UserInput!) {
   }
 }
 
+mutation 
+
+# Variables
 {
-    "user": {
+    "userOne": {
         "firstName": "John",
         "lastName": "Doe",
         "email": "john.doe@gmail.com",
