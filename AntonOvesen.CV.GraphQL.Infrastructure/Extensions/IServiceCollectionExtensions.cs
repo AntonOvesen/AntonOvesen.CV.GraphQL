@@ -1,4 +1,5 @@
 ﻿using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
+using AntonOvesen.CV.GraphQL.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,13 @@ public static class IServiceCollectionExtensions
         services.AddScoped<UserEducationDataLoader>();
         services.AddScoped<UserCompanyDataLoader>();
         services.AddScoped<UserProjectDataLoader>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

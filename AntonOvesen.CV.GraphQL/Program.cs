@@ -13,6 +13,7 @@ builder.Services.AddGraphQL(builder =>
 
 builder.Services.AddMySqlContext(builder.Configuration);
 builder.Services.AddDataLoaders();
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 
