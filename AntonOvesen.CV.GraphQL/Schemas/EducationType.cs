@@ -29,6 +29,6 @@ public class InstitutionType : ObjectGraphType<Institution>
         Field(x => x.Id).Description("Unique identifier");
         Field(x => x.Name).Description("Name of the institution");
         Field(x => x.Website).Description("Link to the institutions website");
-        Field(x => x.Educations).Description("Educations that were completed at this institution");
+        Field(x => x.Educations, typeof(ListGraphType<EducationType>)).Description("Educations that were completed at this institution");
     }
 }

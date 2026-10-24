@@ -16,7 +16,7 @@ public class CompanyType : ObjectGraphType<Company>
         Field(x => x.User, typeof(UserType))
             .Resolve(ctx => ctx.Source.User)
             .Description("User employed at this company");
-        Field(x => x.Skills, typeof(Skill))
+        Field(x => x.Skills, typeof(ListGraphType<SkillType>))
             .Resolve(ctx => ctx.Source.Skills)
             .Description("Skills aquired and applied at this company");
     }

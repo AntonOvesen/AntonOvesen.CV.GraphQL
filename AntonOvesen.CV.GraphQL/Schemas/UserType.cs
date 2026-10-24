@@ -1,4 +1,5 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
+using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using GraphQL.Types;
 
 namespace AntonOvesen.CV.GraphQL.Schemas
@@ -14,7 +15,13 @@ namespace AntonOvesen.CV.GraphQL.Schemas
             Field(x => x.Phone, typeof(PhoneType)).Description("Phone contact information");
             Field(x => x.Educations, typeof(ListGraphType<EducationType>)).Description("Educations this user attendend");
             Field(x => x.Companies, typeof(ListGraphType<CompanyType>)).Description("Companies this user worked for");
-            Field(x => x.Skills, typeof(ListGraphType<SkillType>)).Description("Skills this user has aquired");
+            Field<ListGraphType<SkillType>, IEnumerable<Skill>>(nameof(User.Skills))
+                .Description("Skills this user has aquired")
+                .ResolveAsync(ctx =>
+                {
+                    var loader = ctx.RequestServices.GetRequiredService<UserSkillsDataLoader>();
+                    return loader.LoadAsync(ctx.Source.Id);
+                });
             Field(x => x.Projects, typeof(ListGraphType<ProjectType>)).Description("Projects this user has created or worked on");
         }
     }

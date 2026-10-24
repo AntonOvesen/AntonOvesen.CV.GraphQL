@@ -1,7 +1,6 @@
+using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using AntonOvesen.CV.GraphQL.Infrastructure.Extensions;
 using AntonOvesen.CV.GraphQL.Schemas;
-using AntonOvesen.CV.GraphQL.Services;
-using GraphQL;
 using GraphQL.Server.Ui.GraphiQL;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,14 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGraphQL(builder =>
 {
     builder.AddSystemTextJson()
-        .AddSchema<CVSchema>();
+        .AddSchema<CVSchema>()
+        .AddDataLoader();
 });
 
-builder.Services.AddScoped<ICompanyService, CompanyService>();
-builder.Services.AddScoped<IEducationService, EducationService>();
-builder.Services.AddScoped<IUserService, UserService>();
-
 builder.Services.AddMySqlContext(builder.Configuration);
+builder.Services.AddDataLoaders();
 
 var app = builder.Build();
 

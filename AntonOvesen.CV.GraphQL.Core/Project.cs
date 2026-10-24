@@ -9,7 +9,7 @@ public class Project
 
     #region Relations
 
-    public required User User { get; set; }
+    public User? User { get; set; }
     public List<Skill>? Skills { get; set; }
 
     #endregion Relations

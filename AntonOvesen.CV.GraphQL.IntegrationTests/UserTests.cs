@@ -14,13 +14,15 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         // Arrange
         var skill = new Skill
         {
-            Title = "Cooking"
+            Title = "Cooking",
+            User = null,
         };
         var user = new User
         {
             FirstName = "John",
             Skills = [skill]
         };
+        skill.User = user;
         Context.Users.Add(user);
         await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
@@ -43,7 +45,8 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
             FirstName = user.FirstName,
             Skills = [
                 new Skill {
-                    Title = skill.Title
+                    Title = skill.Title,
+                    User = null
                 }
             ]
         };
@@ -51,9 +54,9 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         // Act
         var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
 
-        response.EnsureSuccessStatusCode();
-
         var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+        
         var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLUserResponse>>(responseString, JsonSerializerOptions.Web);
 
         // Assert
