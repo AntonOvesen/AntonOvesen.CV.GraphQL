@@ -41,6 +41,13 @@ public class CVSchemaQuery : ObjectGraphType
                 return users;
             });
 
+        // TODO:
+        // Companys
+        // Educations
+        // Projects
+        // Skills
+        // Phones
+
         //Field<ListGraphType<EducationType>>("education").ResolveAsync(async ctx =>
         //{
         //    using var scope = ctx.RequestServices!.CreateScope();
