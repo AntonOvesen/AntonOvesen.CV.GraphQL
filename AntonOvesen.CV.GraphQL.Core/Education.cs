@@ -19,6 +19,11 @@ public class Institution
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-
     public string? Website { get; set; }
+
+    #region Relations
+
+    public List<Education>? Educations { get; set; }
+
+    #endregion Relations
 }
