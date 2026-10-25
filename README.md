@@ -7,8 +7,7 @@ Simple graph ql backend
 
 
 ## Running the application
-1. Setup database: `docker compose up -d --wait mysql && dotnet ef database update`
-2. run https launch setting. (No aspire :shrug:)
+Run aspire AppHost
 
 ## TODO
 - Add all the mutations so you can setup the ressources
