@@ -20,10 +20,16 @@ public class CVSchemaMutation : ObjectGraphType
         Field<Education>("createEducation")
             .Argument<NonNullGraphType<EducationInputType>>("education");
 
-        Field<Skill>("createSkill");
-        
-        Field<Company>("createCompany");
-        
-        Field<Project>("createProject");
+        Field<Institution>("createInstitution")
+            .Argument<NonNullGraphType<InstitutionInputType>>("institution");
+
+        Field<Skill>("createSkill")
+            .Argument<NonNullGraphType<SkillInputType>>("skill");
+
+        Field<Company>("createCompany")
+            .Argument<NonNullGraphType<CompanyInputType>>("company");
+
+        Field<Project>("createProject")
+            .Argument<NonNullGraphType<ProjectInputType>>("project");
     }
 }
