@@ -36,6 +36,10 @@ public static class IServiceCollectionExtensions
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IEducationRepository, EducationRepository>();
+        services.AddScoped<ISkillRepository, SkillRepository>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IProjectRepository, ProjectRepository>();
 
         return services;
     }
