@@ -11,7 +11,8 @@ mutation userAdd($anton: UserInput!) {
     }
   }
 }
-
+```
+```json
 # Variables
 {
   "anton": {
@@ -43,7 +44,8 @@ mutation addInstitutions($dania: InstitutionInput!, $videndjurs: InstitutionInpu
     }
   }
 }
-
+```
+```json
 # Variables
 {
   "dania": {
@@ -83,7 +85,8 @@ query findInstitutions {
     lastName
   }
 }
-
+```
+```json
 # Variables
 {
   "datamatiker": {
