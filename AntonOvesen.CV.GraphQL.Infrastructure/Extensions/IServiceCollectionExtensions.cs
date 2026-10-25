@@ -10,7 +10,10 @@ public static class IServiceCollectionExtensions
 {
     public static IServiceCollection AddMySqlContext(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddMySql<CVContext>(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("8.0.26"));
+        return services.AddDbContextFactory<CVContext>(options =>
+        {
+            options.UseMySql(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("8.0.26"));
+        });
     }
 
     public static IServiceCollection AddDataLoaders(this IServiceCollection services)
@@ -22,10 +25,10 @@ public static class IServiceCollectionExtensions
         services.AddScoped<UserCompanyDataLoader>();
         services.AddScoped<UserProjectDataLoader>();
 
-        services.AddScoped<SkillSearchDataLoader>();
         services.AddScoped<CompanySearchDataLoader>();
-        services.AddScoped<ProjectSearchDataLoader>();
         services.AddScoped<EducationSearchDataLoader>();
+        services.AddScoped<ProjectSearchDataLoader>();
+        services.AddScoped<SkillSearchDataLoader>();
 
         return services;
     }

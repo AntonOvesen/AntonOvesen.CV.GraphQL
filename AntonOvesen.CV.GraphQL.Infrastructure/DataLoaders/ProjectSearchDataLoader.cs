@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 
-public class ProjectSearchDataLoader(CVContext context) : DataLoaderBase<string, List<Project>>
+public class ProjectSearchDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<string, List<Project>>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<string, List<Project>>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         foreach (var item in list)
         {
             var searchTerm = $"%{item.Key}%";

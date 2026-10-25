@@ -1,13 +1,15 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using GraphQL.DataLoader;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 
-public class EducationSearchDataLoader(CVContext context) : DataLoaderBase<string, List<Education>>
+public class EducationSearchDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<string, List<Education>>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<string, List<Education>>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         foreach (var item in list)
         {
             var searchTerm = $"%{item.Key}%";

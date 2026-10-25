@@ -1,13 +1,15 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using GraphQL.DataLoader;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 
-public class UserDataLoader(CVContext context) : DataLoaderBase<Guid, User>
+public class UserDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<Guid, User>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, User>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Users.Include(x => x.Phone).Where(x => ids.Contains(x.Id)).ToDictionaryAsync(x => x.Id, cancellationToken);
         foreach (var item in list)
@@ -18,10 +20,11 @@ public class UserDataLoader(CVContext context) : DataLoaderBase<Guid, User>
     }
 }
 
-public class UserSearchDataLoader(CVContext context) : DataLoaderBase<string, List<User>>
+public class UserSearchDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<string, List<User>>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<string, List<User>>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         // Todo: optimize maybe?
         // If you can mark the matches based on what search they match, then group by that.
         // This can be one query
@@ -39,10 +42,11 @@ public class UserSearchDataLoader(CVContext context) : DataLoaderBase<string, Li
     }
 }
 
-public class UserSkillsDataLoader(CVContext context) : DataLoaderBase<Guid, List<Skill>?>
+public class UserSkillsDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<Guid, List<Skill>?>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, List<Skill>?>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Skills
             .Where(x => ids.Contains(x.UserId))
@@ -57,10 +61,11 @@ public class UserSkillsDataLoader(CVContext context) : DataLoaderBase<Guid, List
     }
 }
 
-public class UserEducationDataLoader(CVContext context) : DataLoaderBase<Guid, List<Education>?>
+public class UserEducationDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<Guid, List<Education>?>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, List<Education>?>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Educations
             .Include(x => x.Institution)
@@ -76,10 +81,11 @@ public class UserEducationDataLoader(CVContext context) : DataLoaderBase<Guid, L
     }
 }
 
-public class UserCompanyDataLoader(CVContext context) : DataLoaderBase<Guid, List<Company>?>
+public class UserCompanyDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<Guid, List<Company>?>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, List<Company>?>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Companies
             .Where(x => ids.Contains(x.UserId))
@@ -94,10 +100,11 @@ public class UserCompanyDataLoader(CVContext context) : DataLoaderBase<Guid, Lis
     }
 }
 
-public class UserProjectDataLoader(CVContext context) : DataLoaderBase<Guid, List<Project>?>
+public class UserProjectDataLoader(IDbContextFactory<CVContext> contextFactory) : DataLoaderBase<Guid, List<Project>?>
 {
     protected override async Task FetchAsync(IEnumerable<DataLoaderPair<Guid, List<Project>?>> list, CancellationToken cancellationToken)
     {
+        using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Projects
             .Where(x => ids.Contains(x.UserId))
