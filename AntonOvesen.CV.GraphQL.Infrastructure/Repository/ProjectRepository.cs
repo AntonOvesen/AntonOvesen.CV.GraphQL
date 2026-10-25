@@ -1,4 +1,5 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.Repository;
 
@@ -11,13 +12,22 @@ public interface IProjectRepository
 
 public class ProjectRepository(CVContext context) : IProjectRepository
 {
-    public Task<Project> Create(Project project, CancellationToken cancellationToken)
+    public async Task<Project> Create(Project project, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        context.Projects.Add(project);
+        await context.SaveChangesAsync(cancellationToken);
+        return project;
     }
 
-    public Task<Project> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<Project> Delete(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var Project = await context.Projects.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (Project == null)
+        {
+            return null;
+        }
+        context.Projects.Remove(Project);
+        await context.SaveChangesAsync(cancellationToken);
+        return Project;
     }
 }

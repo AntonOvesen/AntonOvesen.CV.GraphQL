@@ -1,7 +1,6 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using GraphQL.DataLoader;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 

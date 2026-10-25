@@ -1,11 +1,13 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.Repository;
 
 public interface IUserRepository
 {
     Task<User> Create(User user, CancellationToken cancellationToken);
-    Task<User> Delete(Guid id, CancellationToken cancellationToken);
+
+    Task<User?> Delete(Guid id, CancellationToken cancellationToken);
 }
 
 public class UserRepository(CVContext context) : IUserRepository
@@ -17,8 +19,15 @@ public class UserRepository(CVContext context) : IUserRepository
         return user;
     }
 
-    public Task<User> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<User?> Delete(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var user = await context.Users.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (user == null)
+        {
+            return null;
+        }
+        context.Users.Remove(user);
+        await context.SaveChangesAsync(cancellationToken);
+        return user;
     }
 }

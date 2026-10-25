@@ -1,4 +1,5 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
+using Microsoft.EntityFrameworkCore;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.Repository;
 
@@ -8,30 +9,48 @@ public interface IEducationRepository
 
     Task<Institution> CreateInstitution(Institution institution, CancellationToken cancellationToken);
 
-    Task<Education> Delete(Guid id, CancellationToken cancellationToken);
+    Task<Education?> Delete(Guid id, CancellationToken cancellationToken);
 
-    Task<Institution> DeleteInstitution(Guid institutionId, CancellationToken cancellationToken);
+    Task<Institution?> DeleteInstitution(Guid institutionId, CancellationToken cancellationToken);
 }
 
 internal class EducationRepository(CVContext context) : IEducationRepository
 {
-    public Task<Education> Create(Education education, CancellationToken cancellationToken)
+    public async Task<Education> Create(Education education, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        context.Educations.Add(education);
+        await context.SaveChangesAsync(cancellationToken);
+        return education;
     }
 
-    public Task<Institution> CreateInstitution(Institution institution, CancellationToken cancellationToken)
+    public async Task<Institution> CreateInstitution(Institution institution, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        context.Institutions.Add(institution);
+        await context.SaveChangesAsync(cancellationToken);
+        return institution;
     }
 
-    public Task<Education> Delete(Guid id, CancellationToken cancellationToken)
+    public async Task<Education?> Delete(Guid id, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var education = await context.Educations.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+        if (education == null)
+        {
+            return null;
+        }
+        context.Educations.Remove(education);
+        await context.SaveChangesAsync(cancellationToken);
+        return education;
     }
 
-    public Task<Institution> DeleteInstitution(Guid institutionId, CancellationToken cancellationToken)
+    public async Task<Institution?> DeleteInstitution(Guid institutionId, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var institution = await context.Institutions.FirstOrDefaultAsync(x => x.Id == institutionId, cancellationToken);
+        if (institution == null)
+        {
+            return null;
+        }
+        context.Institutions.Remove(institution);
+        await context.SaveChangesAsync(cancellationToken);
+        return institution;
     }
 }
