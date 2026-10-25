@@ -5,6 +5,11 @@ Simple graph ql backend
 - [Querying](./querying.README.md)
 - [Seeding](./seeding.README.md)
 
+
+## Running the application
+1. Setup database: `docker compose up -d --wait mysql && dotnet ef database update`
+2. run https launch setting. (No aspire :shrug:)
+
 ## TODO
 - Add all the mutations so you can setup the ressources
 - Fill out the seeding and query sections to help testing
