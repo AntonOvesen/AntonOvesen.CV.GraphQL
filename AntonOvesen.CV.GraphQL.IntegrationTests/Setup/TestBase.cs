@@ -1,10 +1,10 @@
 ﻿using AntonOvesen.CV.GraphQL.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.MySql;
 
 namespace AntonOvesen.CV.GraphQL.IntegrationTests.Setup;
 
+[Collection("mysql")]
 public class TestBase : IClassFixture<ApiWebApplicationFactory>, IDisposable
 {
     protected IServiceScope Scope;
@@ -22,6 +22,7 @@ public class TestBase : IClassFixture<ApiWebApplicationFactory>, IDisposable
 
     public void Dispose()
     {
+        Context.Database.EnsureDeleted(); // Make sure we get a fresh db on each test
         GC.SuppressFinalize(this);
     }
 }

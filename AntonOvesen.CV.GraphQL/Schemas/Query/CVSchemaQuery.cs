@@ -1,5 +1,4 @@
-﻿using AntonOvesen.CV.GraphQL.Core;
-using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
+﻿using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using GraphQL.Types;
 
 namespace AntonOvesen.CV.GraphQL.Schemas.Query;

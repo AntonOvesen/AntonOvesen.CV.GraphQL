@@ -4,25 +4,11 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Testcontainers.MySql;
 
 namespace AntonOvesen.CV.GraphQL.IntegrationTests.Setup;
 
-public class ApiWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
+public class ApiWebApplicationFactory : WebApplicationFactory<Program>
 {
-    private readonly MySqlContainer mySqlContainer = new MySqlBuilder("mysql:8.0.26").Build();
-
-    public async ValueTask InitializeAsync()
-    {
-        await mySqlContainer.StartAsync();
-    }
-
-    public new ValueTask DisposeAsync()
-    {
-        GC.SuppressFinalize(this);
-        return mySqlContainer.DisposeAsync();
-    }
-
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureTestServices(services =>
@@ -35,7 +21,7 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             }
             services.AddDbContextFactory<CVContext>(options =>
             {
-                options.UseMySql(mySqlContainer.GetConnectionString(), new MySqlServerVersion("8.0.26"));
+                options.UseMySql(MySqlFixture.ConnectionString, new MySqlServerVersion("8.0.26"));
             });
         });
 
