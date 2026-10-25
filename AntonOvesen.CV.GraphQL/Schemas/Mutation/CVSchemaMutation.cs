@@ -9,27 +9,11 @@ public class CVSchemaMutation : ObjectGraphType
 {
     public CVSchemaMutation()
     {
-        Field<UserType>("createUser")
-            .Argument<NonNullGraphType<UserInputType>>("user")
-            .ResolveAsync(async ctx =>
-            {
-                var userRepo = ctx.RequestServices!.GetRequiredService<IUserRepository>();
-                return await userRepo.CreateUser(ctx.GetArgument<User>("user"), ctx.CancellationToken);
-            });
-
-        Field<Education>("createEducation")
-            .Argument<NonNullGraphType<EducationInputType>>("education");
-
-        Field<Institution>("createInstitution")
-            .Argument<NonNullGraphType<InstitutionInputType>>("institution");
-
-        Field<Skill>("createSkill")
-            .Argument<NonNullGraphType<SkillInputType>>("skill");
-
-        Field<Company>("createCompany")
-            .Argument<NonNullGraphType<CompanyInputType>>("company");
-
-        Field<Project>("createProject")
-            .Argument<NonNullGraphType<ProjectInputType>>("project");
+        Field<UserMutations>("user");
+        Field<EducationMutations>("education");
+        Field<InstitutionMutations>("institution");
+        Field<SkillMutations>("skill");
+        Field<CompanyMutations>("company");
+        Field<ProjectMutations>("project");
     }
 }

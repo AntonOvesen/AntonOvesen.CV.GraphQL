@@ -28,12 +28,15 @@ public class ApiWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
         builder.ConfigureTestServices(services =>
         {
             // Mock host services here.
-            var cvContextDescriptor = services.SingleOrDefault(x => x.ServiceType == typeof(CVContext));
+            var cvContextDescriptor = services.SingleOrDefault(x => x.ServiceType == typeof(IDbContextFactory<CVContext>));
             if (cvContextDescriptor != null)
             {
                 services.Remove(cvContextDescriptor);
             }
-            services.AddMySql<CVContext>(mySqlContainer.GetConnectionString(), new MySqlServerVersion("8.0.26"));
+            services.AddDbContextFactory<CVContext>(options =>
+            {
+                options.UseMySql(mySqlContainer.GetConnectionString(), new MySqlServerVersion("8.0.26"));
+            });
         });
 
         base.ConfigureWebHost(builder);

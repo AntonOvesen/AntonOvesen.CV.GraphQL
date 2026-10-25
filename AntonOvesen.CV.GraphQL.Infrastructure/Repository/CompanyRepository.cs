@@ -1,17 +1,23 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 
-namespace AntonOvesen.CV.GraphQL.Infrastructure.Repository
+namespace AntonOvesen.CV.GraphQL.Infrastructure.Repository;
+
+public interface ICompanyRepository
 {
-    public interface ICompanyRepository
+    Task<Company> Create(Company company, CancellationToken cancellationToken);
+
+    Task<Company> Delete(Guid id, CancellationToken cancellationToken);
+}
+
+internal class CompanyRepository(CVContext context) : ICompanyRepository
+{
+    public Task<Company> Create(Company company, CancellationToken cancellationToken)
     {
-        Task<Company> Create(Company company, CancellationToken cancellationToken);
+        throw new NotImplementedException();
     }
 
-    internal class CompanyRepository(CVContext context) : ICompanyRepository
+    public Task<Company> Delete(Guid id, CancellationToken cancellationToken)
     {
-        public Task<Company> Create(Company company, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+        throw new NotImplementedException();
     }
 }

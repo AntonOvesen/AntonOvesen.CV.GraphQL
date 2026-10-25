@@ -10,5 +10,7 @@ public class CVSchema : Schema
     {
         Query = new CVSchemaQuery();
         Mutation = new CVSchemaMutation();
+
+        //RegisterType(typeof(CompanyMutations));
     }
 }

@@ -1,7 +1,31 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
+using AntonOvesen.CV.GraphQL.Infrastructure.Repository;
+using AntonOvesen.CV.GraphQL.Schemas.Query;
 using GraphQL.Types;
 
 namespace AntonOvesen.CV.GraphQL.Schemas.Mutation;
+
+public class UserMutations : ObjectGraphType
+{
+    public UserMutations()
+    {
+        Field<UserType>("create")
+            .Argument<NonNullGraphType<UserInputType>>("user")
+            .ResolveAsync(async ctx =>
+            {
+                var userRepository = ctx.RequestServices!.GetRequiredService<IUserRepository>();
+                return await userRepository.Create(ctx.GetArgument<User>("user"), ctx.CancellationToken);
+            });
+
+        Field<UserType>("delete")
+            .Argument<NonNullGraphType<IdGraphType>>("id")
+            .ResolveAsync(async ctx =>
+            {
+                var userRepository = ctx.RequestServices!.GetRequiredService<IUserRepository>();
+                return await userRepository.Delete(ctx.GetArgument<Guid>("id"), ctx.CancellationToken);
+            });
+    }
+}
 
 public class UserInputType : InputObjectGraphType<User>
 {

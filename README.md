@@ -11,3 +11,11 @@ Simple graph ql backend
 - Add section about hosting. (maybe add docker compose?)
 
 
+## Notes to self:
+```graphql
+mutation user ($john:UserInput!){ // Decalre Variables reference at mutation level
+  createUser(user:$john){ // Reference that model at mutation method type here
+    id // Delcare what data it will return. Just like query.
+  }
+}
+```

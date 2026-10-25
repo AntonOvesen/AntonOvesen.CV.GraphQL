@@ -233,10 +233,4 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         // Assert
         responseData!.Data!.Users.Should().BeEquivalentTo([expected]);
     }
-
-    [Fact]
-    public async Task UserSearch_CallsTwice_DoesntFail()
-    {
-
-    }
 }
