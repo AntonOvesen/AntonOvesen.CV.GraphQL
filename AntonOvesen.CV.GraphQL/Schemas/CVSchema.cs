@@ -41,10 +41,42 @@ public class CVSchemaQuery : ObjectGraphType
             });
 
         Field<ListGraphType<UserType>>("users")
-            .Argument<string>("searchTerm")
+            .Argument<string>("searchTerm", nullable: true)
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<UserSearchDataLoader>();
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+            });
+
+        Field<ListGraphType<SkillType>>("skills")
+            .Argument<string>("searchTerm", nullable: true)
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<SkillSearchDataLoader>();
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+            });
+
+        Field<ListGraphType<CompanyType>>("companies")
+            .Argument<string>("searchTerm", nullable: true)
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<CompanySearchDataLoader>();
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+            });
+
+        Field<ListGraphType<EducationType>>("educations")
+            .Argument<string>("searchTerm", nullable: true)
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<EducationSearchDataLoader>();
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+            });
+
+        Field<ListGraphType<ProjectType>>("projects")
+            .Argument<string>("searchTerm", nullable: true)
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<ProjectSearchDataLoader>();
                 return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
             });
     }
