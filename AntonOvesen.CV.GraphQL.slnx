@@ -2,7 +2,9 @@
   <Folder Name="/Tests/">
     <Project Path="AntonOvesen.CV.GraphQL.IntegrationTests/AntonOvesen.CV.GraphQL.IntegrationTests.csproj" Id="eb13b836-880b-46fc-8f71-5bb3ea7b238b" />
   </Folder>
+  <Project Path="AntonOvesen.CV.GraphQL.AppHost/AntonOvesen.CV.GraphQL.AppHost.csproj" Id="51cf5bf4-3f1b-4337-9f27-8ad90f10b250" />
   <Project Path="AntonOvesen.CV.GraphQL.Core/AntonOvesen.CV.GraphQL.Core.csproj" Id="4a369976-3b4f-40f4-9c43-0150ef12d1d0" />
   <Project Path="AntonOvesen.CV.GraphQL.Infrastructure/AntonOvesen.CV.GraphQL.Infrastructure.csproj" Id="fe139637-19b7-4eba-b0f0-7175cd9f4f7f" />
+  <Project Path="AntonOvesen.CV.GraphQL.ServiceDefaults/AntonOvesen.CV.GraphQL.ServiceDefaults.csproj" />
   <Project Path="AntonOvesen.CV.GraphQL/AntonOvesen.CV.GraphQL.csproj" />
 </Solution>

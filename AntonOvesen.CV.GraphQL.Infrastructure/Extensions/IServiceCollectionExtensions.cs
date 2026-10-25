@@ -12,7 +12,8 @@ public static class IServiceCollectionExtensions
     {
         return services.AddDbContextFactory<CVContext>(options =>
         {
-            options.UseMySql(configuration.GetConnectionString("MySQL"), new MySqlServerVersion("8.0.26"));
+            var connectionString = configuration.GetConnectionString("MySQL");
+            options.UseMySql($"{connectionString};Database=graphql", new MySqlServerVersion("8.0.26"));
         });
     }
 
