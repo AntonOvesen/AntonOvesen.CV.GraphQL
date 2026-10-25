@@ -1,8 +1,7 @@
-using AntonOvesen.CV.GraphQL.Infrastructure;
+using AntonOvesen.CV.GraphQL;
 using AntonOvesen.CV.GraphQL.Infrastructure.Extensions;
 using AntonOvesen.CV.GraphQL.Schemas;
 using GraphQL.Server.Ui.GraphiQL;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +17,7 @@ builder.Services.AddGraphQL(builder =>
 builder.Services.AddMySqlContext(builder.Configuration);
 builder.Services.AddDataLoaders();
 builder.Services.AddRepositories();
+builder.Services.AddHostedService<Migrator>();
 
 var app = builder.Build();
 

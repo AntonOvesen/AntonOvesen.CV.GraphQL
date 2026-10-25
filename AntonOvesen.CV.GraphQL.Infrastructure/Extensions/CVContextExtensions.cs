@@ -9,9 +9,6 @@ public static class CVContextExtensions
     {
         public async Task TrySeedContext(CancellationToken cancellationToken)
         {
-            // Simple migration
-            await context.Database.MigrateAsync(cancellationToken);
-
             var user = CreateUser();
             if (await context.TrySeed([user], cancellationToken))
             {
@@ -21,11 +18,11 @@ public static class CVContextExtensions
                     await context.TrySeed([CreateEducation(institution, user)], cancellationToken);
                 }
 
-                await context.TrySeed([CreateCompanies(user)], cancellationToken);
+                await context.TrySeed(CreateCompanies(user), cancellationToken);
 
-                await context.TrySeed([CreateProjects(user)], cancellationToken);
+                await context.TrySeed(CreateProjects(user), cancellationToken);
 
-                await context.TrySeed([CreateSkills(user)], cancellationToken);
+                await context.TrySeed(CreateSkills(user), cancellationToken);
             }
         }
 
@@ -108,7 +105,8 @@ public static class CVContextExtensions
         new Project {
             Title = "Guid Converter",
             Description = "Lille Blazor webapp til at base64 en-og-decode Guid's",
-            Ref = "https://github.com/AntonOvesen/services-utilities"
+            Ref = "https://github.com/AntonOvesen/services-utilities",
+            User = user
         }
     ];
 
