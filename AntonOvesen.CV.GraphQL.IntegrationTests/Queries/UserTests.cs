@@ -1,7 +1,7 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using AntonOvesen.CV.GraphQL.IntegrationTests.Setup;
 using FluentAssertions;
-using NSubstitute;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
 using System.Text.Json;
 
@@ -95,7 +95,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
             From = DateTime.Parse("2024-01-01"),
             To = DateTime.Parse("2025-01-01"),
             Name = "Tryg",
-            Website = "tryg.dk"
+            Website = "tryg.dk",
         };
 
         var skill = new Skill
@@ -233,4 +233,139 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         // Assert
         responseData!.Data!.Users.Should().BeEquivalentTo([expected]);
     }
+
+    [Fact]
+    public async Task UserCreate_ValidUserBody_CreatesUser()
+    {
+        // Arrange
+        var userRequest = new
+        {
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "John.doe@gmail.com",
+            Phone = new Phone
+            {
+                CountryCode = "+45",
+                Number = "12345678"
+            }
+        };
+
+        var request = new
+        {
+            Query = @"mutation userAdd($userData: UserInput!) {
+  user {
+    create(user: $userData) {
+      id
+      firstName
+    }
+  }
+}",
+            Variables = new { UserData = userRequest }
+        };
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
+
+        var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataUser<DataUserCreate>>>(responseString, JsonSerializerOptions.Web);
+
+        // Assert
+        responseData!.Data!.User!.Create!.Id.Should().NotBeEmpty();
+        responseData.Data.User.Create.FirstName.Should().Be(userRequest.FirstName);
+
+        var userInDatabase = await Context.Users.FirstOrDefaultAsync(x => x.Id == responseData.Data.User.Create.Id, TestContext.Current.CancellationToken);
+        userInDatabase.Should().BeEquivalentTo(userRequest);
+    }
+
+    [Fact]
+    public async Task UserDelete_UserExists_DeletedAndReturnsDeletedUser()
+    {
+        // Arrange
+        var skill = new Skill
+        {
+            Title = "Cooking",
+            User = null,
+        };
+        var user = new User
+        {
+            FirstName = "Simon",
+            LastName = "Simonsen",
+            Skills = [skill]
+        };
+
+        Context.Users.Add(user);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new
+        {
+            Query = $@"mutation removeUser {{
+  user {{
+    delete(id: ""{user.Id}"") {{
+      id
+      lastName
+    }}
+  }}
+}}"
+        };
+
+        var expected = new GraphQLResponse<GraphQLDataUser<DataUserDelete>>
+        {
+            Data = new GraphQLDataUser<DataUserDelete>
+            {
+                User = new DataUserDelete
+                {
+                    Delete = new User
+                    {
+                        Id = user.Id,
+                        LastName = user.LastName
+                    }
+                }
+            }
+        };
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
+
+        var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataUser<DataUserDelete>>>(responseString, JsonSerializerOptions.Web);
+
+        // Assert
+        user.Id.Should().NotBeEmpty();
+        responseData.Should().BeEquivalentTo(expected);
+        var userExists = await Context.Users.AnyAsync(x => x.Id == user.Id, TestContext.Current.CancellationToken);
+        userExists.Should().BeFalse();
+    }
+
+    #region Models
+
+    public class GraphQLUserResponse
+    {
+        public User? User { get; set; }
+    }
+
+    public class GraphQLUsersResponse
+    {
+        public List<User>? Users { get; set; }
+    }
+
+    public class DataUserDelete
+    {
+        public User? Delete { get; set; }
+    }
+
+    public class DataUserCreate
+    {
+        public User? Create { get; set; }
+    }
+
+    private class GraphQLDataUser<TUser>
+    {
+        public TUser? User { get; set; }
+    }
+
+    #endregion Models
 }
