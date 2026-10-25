@@ -1,5 +1,5 @@
-# Seeding data query: (WIP)
-Everything ressource is writable in the api
+# Mutation examples
+Every ressource consists of a list-search, write, & delete.
 
 ## Adding user
 ```graphql
@@ -16,11 +16,11 @@ mutation userAdd($anton: UserInput!) {
 # Variables
 {
   "anton": {
-    "firstName": "Anton",
-    "lastName": "Ovesen",
-    "email": "anton@ovese-mail.dk",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@gmail.com",
     "phone": {
-      "number": "51929765",
+      "number": "00000000",
       "countryCode": "+45"
     }
   }

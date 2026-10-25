@@ -53,7 +53,7 @@ query educationOverview {
     companies {
       id
       name
-      founded
+      role
       website
       from
       to
