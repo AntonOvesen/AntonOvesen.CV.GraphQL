@@ -157,7 +157,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
     companies {{
       id
       name
-      founded
+      role
       website
       from
       to

@@ -34,11 +34,4 @@ app.UseGraphQLGraphiQL(
         SubscriptionsEndPoint = "/graphql"
     });
 
-if (app.Environment.IsDevelopment()) // Simple migration
-{
-    using var scope = app.Services.CreateScope();
-    var context = scope.ServiceProvider.GetRequiredService<CVContext>();
-    await context.Database.MigrateAsync();
-}
-
 app.Run();

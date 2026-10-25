@@ -30,7 +30,7 @@ public class CompanyTests(ApiWebApplicationFactory factory) : TestBase(factory)
 
         var request = new
         {
-            Query = @"query { companies { id name founded from to website user { id } } }"
+            Query = @"query { companies { id name role from to website user { id } } }"
         };
 
         var expected = new GraphQLResponse<GraphQLCompaniesResponse>

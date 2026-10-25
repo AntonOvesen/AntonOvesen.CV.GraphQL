@@ -9,26 +9,22 @@ public static class CVContextExtensions
     {
         public async Task TrySeedContext(CancellationToken cancellationToken)
         {
-            // TODO:
-            // Users
+            // Simple migration
+            await context.Database.MigrateAsync(cancellationToken);
+
             var user = CreateUser();
             if (await context.TrySeed([user], cancellationToken))
             {
-                // Institutions
                 var institution = CreateInstitution();
                 if (await context.TrySeed([institution], cancellationToken))
                 {
-                    // Educations
                     await context.TrySeed([CreateEducation(institution, user)], cancellationToken);
                 }
 
-                // Companies
                 await context.TrySeed([CreateCompanies(user)], cancellationToken);
 
-                // Projects
                 await context.TrySeed([CreateProjects(user)], cancellationToken);
 
-                // Skills
                 await context.TrySeed([CreateSkills(user)], cancellationToken);
             }
         }

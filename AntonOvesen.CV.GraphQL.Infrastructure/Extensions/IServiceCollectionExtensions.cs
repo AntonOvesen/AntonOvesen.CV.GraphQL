@@ -15,6 +15,7 @@ public static class IServiceCollectionExtensions
             return services.AddDbContextFactory<CVContext>(options =>
             {
                 var connectionString = configuration.GetConnectionString("MySQL");
+                options.UseSeeding((ctx, _) => { });
                 options.UseAsyncSeeding((context, _, ct) => context.TrySeedContext(ct));
                 options.UseMySql($"{connectionString};Database=graphql", new MySqlServerVersion("8.0.26"));
             });
