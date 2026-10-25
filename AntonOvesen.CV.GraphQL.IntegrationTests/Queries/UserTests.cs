@@ -91,7 +91,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
 
         var company = new Company
         {
-            Founded = DateTime.Parse("2002-01-01"),
+            Role = "Backend Developer",
             From = DateTime.Parse("2024-01-01"),
             To = DateTime.Parse("2025-01-01"),
             Name = "Tryg",
@@ -204,7 +204,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
                 Name = company.Name,
                 From = company.From,
                 To = company.To,
-                Founded = company.Founded,
+                Role = company.Role,
                 Website = company.Website,
                 User = deepUser
             }],

@@ -10,7 +10,7 @@ public class CompanyType : ObjectGraphType<Company>
     {
         Field(x => x.Id).Description("Unique identifier");
         Field(x => x.Name).Description("The current name of the company");
-        Field(x => x.Founded).Description("When was the company founded");
+        Field(x => x.Role).Description("The users role at this company");
         Field(x => x.Website).Description("Link to the companies website");
         Field(x => x.From).Description("When the user started at this company");
         Field(x => x.To).Description("When the user departed the company. Empty if active employer");

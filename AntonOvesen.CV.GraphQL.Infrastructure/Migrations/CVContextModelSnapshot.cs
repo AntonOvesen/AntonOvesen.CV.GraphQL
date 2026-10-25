@@ -28,13 +28,13 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Founded")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<DateTime>("From")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Role")
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("To")

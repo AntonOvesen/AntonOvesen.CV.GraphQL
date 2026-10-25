@@ -15,7 +15,7 @@ public class CompanyTests(ApiWebApplicationFactory factory) : TestBase(factory)
         var company = new Company
         {
             Name = "Tryg",
-            Founded = DateTime.Parse("2002-01-28"),
+            Role = "Backend Developer",
             From = DateTime.Parse("2024-01-01"),
             To = DateTime.Parse("2025-01-01"),
             Website = "tryg.dk"
@@ -39,7 +39,7 @@ public class CompanyTests(ApiWebApplicationFactory factory) : TestBase(factory)
             {
                 Companies = [new Company {
                     Id = company.Id,
-                    Founded = company.Founded,
+                    Role = company.Role,
                     From = company.From,
                     To  = company.To,
                     Name = company.Name,
