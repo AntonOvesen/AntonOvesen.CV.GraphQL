@@ -87,7 +87,6 @@ namespace AntonOvesen.CV.GraphQL.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Website")

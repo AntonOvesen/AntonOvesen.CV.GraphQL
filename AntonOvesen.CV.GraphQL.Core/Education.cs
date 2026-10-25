@@ -19,6 +19,6 @@ public class Education
 public class Institution
 {
     public Guid Id { get; set; }
-    public required string Name { get; set; }
+    public string? Name { get; set; }
     public string? Website { get; set; }
 }
