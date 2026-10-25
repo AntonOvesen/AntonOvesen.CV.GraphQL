@@ -2,7 +2,7 @@
 using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using GraphQL.Types;
 
-namespace AntonOvesen.CV.GraphQL.Schemas;
+namespace AntonOvesen.CV.GraphQL.Schemas.Query;
 
 public class CompanyType : ObjectGraphType<Company>
 {
