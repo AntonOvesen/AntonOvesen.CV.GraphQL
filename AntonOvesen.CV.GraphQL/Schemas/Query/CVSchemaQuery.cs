@@ -1,4 +1,5 @@
-﻿using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
+﻿using AntonOvesen.CV.GraphQL.Core;
+using AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 using GraphQL.Types;
 
 namespace AntonOvesen.CV.GraphQL.Schemas.Query;
@@ -20,7 +21,7 @@ public class CVSchemaQuery : ObjectGraphType
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<UserSearchDataLoader>();
-                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
             });
 
         Field<ListGraphType<SkillType>>("skills")
@@ -28,7 +29,7 @@ public class CVSchemaQuery : ObjectGraphType
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<SkillSearchDataLoader>();
-                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
             });
 
         Field<ListGraphType<CompanyType>>("companies")
@@ -36,7 +37,7 @@ public class CVSchemaQuery : ObjectGraphType
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<CompanySearchDataLoader>();
-                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
             });
 
         Field<ListGraphType<EducationType>>("educations")
@@ -44,7 +45,16 @@ public class CVSchemaQuery : ObjectGraphType
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<EducationSearchDataLoader>();
-                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
+            });
+
+        Field<ListGraphType<InstitutionType>>("institutions")
+            .Argument<string>("searchTerm", nullable: true)
+            .ResolveAsync(async ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<InstitutionSearchDataLoader>();
+
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
             });
 
         Field<ListGraphType<ProjectType>>("projects")
@@ -52,7 +62,7 @@ public class CVSchemaQuery : ObjectGraphType
             .ResolveAsync(async ctx =>
             {
                 var loader = ctx.RequestServices!.GetRequiredService<ProjectSearchDataLoader>();
-                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm"));
+                return loader.LoadAsync(ctx.GetArgument<string>("searchTerm", defaultValue: string.Empty));
             });
     }
 }

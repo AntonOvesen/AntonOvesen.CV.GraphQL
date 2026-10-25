@@ -67,7 +67,6 @@ public class UserEducationDataLoader(IDbContextFactory<CVContext> contextFactory
         using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var ids = list.Select(x => x.Key);
         var data = await context.Educations
-            .Include(x => x.Institution)
             .Where(x => ids.Contains(x.UserId))
             .ToListAsync(cancellationToken);
 

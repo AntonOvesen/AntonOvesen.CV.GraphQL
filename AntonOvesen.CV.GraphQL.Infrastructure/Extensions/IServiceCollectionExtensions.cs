@@ -27,8 +27,11 @@ public static class IServiceCollectionExtensions
 
         services.AddScoped<CompanySearchDataLoader>();
         services.AddScoped<EducationSearchDataLoader>();
+        services.AddScoped<InstitutionSearchDataLoader>();
         services.AddScoped<ProjectSearchDataLoader>();
         services.AddScoped<SkillSearchDataLoader>();
+
+        services.AddScoped<InstitutionDataLoader>();
 
         return services;
     }

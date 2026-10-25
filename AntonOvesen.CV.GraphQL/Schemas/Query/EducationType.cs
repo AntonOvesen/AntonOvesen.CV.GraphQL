@@ -14,10 +14,13 @@ public class EducationType : ObjectGraphType<Education>
 
         #region Relations
 
-        // Implicitly included.
         Field(x => x.Institution, typeof(InstitutionType))
-            .Resolve(ctx => ctx.Source.Institution)
-            .Description("Institution this education was completed at");
+            .Description("Institution this education was completed at")
+            .ResolveAsync(ctx =>
+            {
+                var loader = ctx.RequestServices!.GetRequiredService<InstitutionDataLoader>();
+                return loader.LoadAsync(ctx.Source.InstitutionId);
+            });
 
         Field(x => x.User, typeof(UserType))
             .Description("User who completed this education")
@@ -31,12 +34,3 @@ public class EducationType : ObjectGraphType<Education>
     }
 }
 
-public class InstitutionType : ObjectGraphType<Institution>
-{
-    public InstitutionType()
-    {
-        Field(x => x.Id).Description("Unique identifier");
-        Field(x => x.Name).Description("Name of the institution");
-        Field(x => x.Website).Description("Link to the institutions website");
-    }
-}

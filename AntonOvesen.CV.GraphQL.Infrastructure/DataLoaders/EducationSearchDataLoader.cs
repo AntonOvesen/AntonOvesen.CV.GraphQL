@@ -1,7 +1,6 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using GraphQL.DataLoader;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AntonOvesen.CV.GraphQL.Infrastructure.DataLoaders;
 
@@ -14,12 +13,9 @@ public class EducationSearchDataLoader(IDbContextFactory<CVContext> contextFacto
         {
             var searchTerm = $"%{item.Key}%";
             var usersMatches = await context.Educations
-                .Include(x => x.Institution)
                 .Where(education =>
                     EF.Functions.Like(education.Name, searchTerm) ||
-                    EF.Functions.Like(education.Level, searchTerm) ||
-                    (education.Institution != null && EF.Functions.Like(education.Institution.Name, searchTerm))
-                )
+                    EF.Functions.Like(education.Level, searchTerm))
                 .ToListAsync(cancellationToken);
 
             item.SetResult(usersMatches);

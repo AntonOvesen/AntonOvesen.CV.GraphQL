@@ -1,6 +1,34 @@
 # Querying 
 A list of example queries
 
+## Institution Overview
+```graphql
+query institutionOverview {
+  institutions {
+    id
+    name
+    website
+  }
+}
+```
+## Education Overview
+```graphql
+query educationOverview {
+  educations {
+    id
+    name
+    level
+    institution {
+      name
+    }
+    user {
+      firstName
+    }
+  }
+}
+```
+
+# THE BIG ONE
 ```graphql
 {
   users(searchTerm: "") {
