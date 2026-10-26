@@ -3,7 +3,7 @@ Simple graph ql backend
 
 ## Examples
 - [Querying](./querying.README.md)
-- [Mutating](./seeding.README.md)
+- [Mutating](./mutations.README.md)
 
 ## Running the application
 Run aspire AppHost
