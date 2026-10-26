@@ -257,6 +257,9 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
     create(user: $userData) {
       id
       firstName
+      lastName
+      email
+      phone { number countryCode }
     }
   }
 }",
@@ -273,7 +276,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
 
         // Assert
         responseData!.Data!.User!.Create!.Id.Should().NotBeEmpty();
-        responseData.Data.User.Create.FirstName.Should().Be(userRequest.FirstName);
+        responseData.Data.User.Create.Should().BeEquivalentTo(userRequest);
 
         var userInDatabase = await Context.Users.FirstOrDefaultAsync(x => x.Id == responseData.Data.User.Create.Id, TestContext.Current.CancellationToken);
         userInDatabase.Should().BeEquivalentTo(userRequest);

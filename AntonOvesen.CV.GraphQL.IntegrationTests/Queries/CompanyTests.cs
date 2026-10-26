@@ -66,6 +66,7 @@ public class CompanyTests(ApiWebApplicationFactory factory) : TestBase(factory)
     [Fact]
     public async Task CompanyCreate_ValidRequest_CreatesCompany()
     {
+        // Arrange
         throw new NotImplementedException();
     }
 
