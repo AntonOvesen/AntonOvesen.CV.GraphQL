@@ -63,6 +63,18 @@ public class CompanyTests(ApiWebApplicationFactory factory) : TestBase(factory)
         result.Should().BeEquivalentTo(expected);
     }
 
+    [Fact]
+    public async Task CompanyCreate_ValidRequest_CreatesCompany()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task CompanyDelete_CompanyExists_RemovesCompanyFromDatabase()
+    {
+        throw new NotImplementedException();
+    }
+
     #region Models
 
     public record GraphQLCompaniesResponse

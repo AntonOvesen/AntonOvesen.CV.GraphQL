@@ -68,6 +68,18 @@ public class EducationTests(ApiWebApplicationFactory factory) : TestBase(factory
         result.Should().BeEquivalentTo(expected);
     }
 
+    [Fact]
+    public async Task EducationCreate_ValidRequest_CreatesEducation()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task EducationDelete_EducationExists_DeletesEducationFromDatabase()
+    {
+        throw new NotImplementedException();
+    }
+
     #region Models
 
     public record GraphQLEducationsResponse
