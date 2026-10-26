@@ -1,10 +1,8 @@
 ﻿using AntonOvesen.CV.GraphQL.Core;
 using AntonOvesen.CV.GraphQL.IntegrationTests.Setup;
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
-using static AntonOvesen.CV.GraphQL.IntegrationTests.Queries.UserTests;
 
 namespace AntonOvesen.CV.GraphQL.IntegrationTests.Queries;
 
@@ -88,7 +86,6 @@ public class SkillTests(ApiWebApplicationFactory factory) : TestBase(factory)
                 SkillData = newSkill
             }
         };
-
 
         // Act
         var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
