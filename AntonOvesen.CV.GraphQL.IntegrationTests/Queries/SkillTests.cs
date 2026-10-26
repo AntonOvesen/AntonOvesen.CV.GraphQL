@@ -137,10 +137,21 @@ public class SkillTests(ApiWebApplicationFactory factory) : TestBase(factory)
             Query = $@"
 mutation {{
     skill {{
-        delete(id: ""{skill.Id}"") {{ id }}
+        delete(id: ""{skill.Id}"") {{ 
+            id 
+            title
+            description
+        }}
     }}
 }}
 "
+        };
+
+        var expected = new
+        {
+            skill.Id,
+            skill.Title,
+            skill.Description
         };
 
         // Act
@@ -153,9 +164,12 @@ mutation {{
 
         // Assert
         skill.Id.Should().NotBeEmpty();
-        responseData!.Data!.Skill!.Delete!.Id.Should().Be(skill.Id);
+        responseData!.Data!.Skill!.Delete.Should().BeEquivalentTo(expected);
 
-        var skillExists = await Context.Skills.AnyAsync(x => x.Id == skill.Id, TestContext.Current.CancellationToken);
+        var skillExists = await Context.Skills
+            .AnyAsync(
+                x => x.Id == responseData!.Data!.Skill!.Delete.Id, 
+                TestContext.Current.CancellationToken);
         skillExists.Should().BeFalse();
     }
 

@@ -4,7 +4,6 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Json;
 using System.Text.Json;
-using static AntonOvesen.CV.GraphQL.IntegrationTests.Queries.SkillTests;
 
 namespace AntonOvesen.CV.GraphQL.IntegrationTests.Queries;
 
@@ -63,14 +62,14 @@ public class InstitutionTests(ApiWebApplicationFactory factory) : TestBase(facto
 
         var request = new
         {
-            Query = @"mutation createInstitution($institutionData: InstitutionInput!) { 
-institution { 
-    create(institution: $institutionData) { 
-        id 
-        name 
-        website 
-    } 
-} 
+            Query = @"mutation createInstitution($institutionData: InstitutionInput!) {
+institution {
+    create(institution: $institutionData) {
+        id
+        name
+        website
+    }
+}
 }",
             Variables = new
             {
@@ -95,9 +94,44 @@ institution {
     }
 
     [Fact]
-    public async Task InstitutionDelete_InstitutionExists_DeletesInstitutionFromDatabase() 
-    {  
-        throw new NotImplementedException(); 
+    public async Task InstitutionDelete_InstitutionExists_DeletesInstitutionFromDatabase()
+    {
+        // Arrange
+        var institution = new Institution
+        {
+            Name = "Name",
+            Website = "Website"
+        };
+        Context.Institutions.Add(institution);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new
+        {
+            Query = $@"mutation {{ institution {{
+delete(id: ""{institution.Id}"")
+{{
+id
+name
+website
+}} }} }}"
+        };
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
+
+        var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataInstitution<DataInstitutionDelete>>>(responseString, JsonSerializerOptions.Web);
+
+        // Assert
+        responseData!.Data!.Institution!.Delete.Should().BeEquivalentTo(institution);
+
+        var institutionExists = await Context.Institutions.AnyAsync(
+            x => x.Id == responseData!.Data!.Institution!.Delete!.Id,
+            TestContext.Current.CancellationToken);
+
+        institutionExists.Should().BeFalse();
     }
 
     #region Models
@@ -107,12 +141,17 @@ institution {
         public List<Institution>? Institutions { get; set; }
     }
 
-    public class DataInstitutionCreate
+    public record DataInstitutionCreate
     {
         public Institution? Create { get; set; }
     }
 
-    public class GraphQLDataInstitution<TInstitution>
+    public record DataInstitutionDelete
+    {
+        public Institution? Delete { get; set; }
+    }
+
+    public record GraphQLDataInstitution<TInstitution>
     {
         public TInstitution? Institution { get; set; }
     }

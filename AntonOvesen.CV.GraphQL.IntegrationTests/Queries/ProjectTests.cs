@@ -117,7 +117,61 @@ project {
     [Fact]
     public async Task ProjectDelete_ProjectExists_DeletesProjectFromDatabase()
     {
-        throw new NotImplementedException();
+        // Arrange
+        var project = new Project
+        {
+            Title = "Title",
+            Description = "Description",
+            Ref = "Ref"
+        };
+
+        var user = new User
+        {
+            Projects = [project]
+        };
+
+        Context.Users.Add(user);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new
+        {
+            Query = $@"
+mutation {{
+    project {{
+        delete(id: ""{project.Id}"") {{
+            id
+            title
+            description
+            ref
+        }}
+    }}
+}}",
+        };
+
+        var expected = new
+        {
+            project.Id,
+            project.Title,
+            project.Description,
+            project.Ref
+        };
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
+
+        var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataProject<DataProjectDelete>>>(responseString, JsonSerializerOptions.Web);
+
+        // Assert
+        responseData!.Data!.Project!.Delete.Should().BeEquivalentTo(expected);
+
+        var projectExists = await Context.Projects
+            .AnyAsync(
+                x => x.Id == responseData.Data.Project.Delete.Id,
+                TestContext.Current.CancellationToken);
+        projectExists.Should().BeFalse();
     }
 
     #region Models
@@ -127,17 +181,17 @@ project {
         public List<Project>? Projects { get; set; }
     }
 
-    public class DataProjectDelete
+    public record DataProjectDelete
     {
         public Project? Delete { get; set; }
     }
 
-    public class DataProjectCreate
+    public record DataProjectCreate
     {
         public Project? Create { get; set; }
     }
 
-    private class GraphQLDataProject<TProject>
+    private record GraphQLDataProject<TProject>
     {
         public TProject? Project { get; set; }
     }

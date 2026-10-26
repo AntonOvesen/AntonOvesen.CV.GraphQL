@@ -122,7 +122,7 @@ education {
         var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         response.EnsureSuccessStatusCode();
 
-        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GRaphQLDataEducation<DataEducationCreate>>>(responseString, JsonSerializerOptions.Web);
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataEducation<DataEducationCreate>>>(responseString, JsonSerializerOptions.Web);
 
         // Assert
         responseData!.Data!.Education!.Create!.Id.Should().NotBeEmpty();
@@ -135,17 +135,67 @@ education {
     [Fact]
     public async Task EducationDelete_EducationExists_DeletesEducationFromDatabase()
     {
-        throw new NotImplementedException();
+        // Arrange
+        var user = new User();
+        var institution = new Institution();
+        var education = new Education
+        {
+            Institution = institution,
+            User = user,
+            Level = "Level",
+            Name = "name",
+        };
+        Context.Educations.Add(education);
+        await Context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        var request = new
+        {
+            Query = $@"mutation {{ education {{
+delete(id: ""{education.Id}"") {{
+id
+name
+level
+}} }} }}"
+        };
+
+        var expected = new
+        {
+            education.Id,
+            education.Name,
+            education.Level,
+        };
+
+        // Act
+        var response = await Client.PostAsJsonAsync("/graphql", request, TestContext.Current.CancellationToken);
+
+        var responseString = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataEducation<DataEducationDelete>>>(responseString, JsonSerializerOptions.Web);
+
+        // Assert
+        responseData!.Data!.Education!.Delete.Should().BeEquivalentTo(expected);
+
+        var companyExists = await Context.Educations
+            .AnyAsync(
+                x => x.Id == responseData!.Data!.Education!.Delete.Id,
+                TestContext.Current.CancellationToken);
+        companyExists.Should().BeFalse();
     }
 
     #region Models
 
-    public class DataEducationCreate
+    public record DataEducationDelete
+    {
+        public Education? Delete { get; set; }
+    }
+
+    public record DataEducationCreate
     {
         public Education? Create { get; set; }
     }
 
-    private class GRaphQLDataEducation<TEducation>
+    private record GraphQLDataEducation<TEducation>
     {
         public TEducation? Education { get; set; }
     }

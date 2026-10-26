@@ -295,6 +295,12 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         {
             FirstName = "Simon",
             LastName = "Simonsen",
+            Email = "email",
+            Phone = new Phone
+            {
+                CountryCode = "+45",
+                Number = "00000000"
+            },
             Skills = [skill]
         };
 
@@ -307,25 +313,22 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
   user {{
     delete(id: ""{user.Id}"") {{
       id
+      firstName
       lastName
+      email
+      phone {{ countryCode number }}
     }}
   }}
 }}"
         };
 
-        var expected = new GraphQLResponse<GraphQLDataUser<DataUserDelete>>
+        var expected = new
         {
-            Data = new GraphQLDataUser<DataUserDelete>
-            {
-                User = new DataUserDelete
-                {
-                    Delete = new User
-                    {
-                        Id = user.Id,
-                        LastName = user.LastName
-                    }
-                }
-            }
+            user.Id,
+            user.FirstName,
+            user.LastName,
+            user.Email,
+            user.Phone
         };
 
         // Act
@@ -337,9 +340,12 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataUser<DataUserDelete>>>(responseString, JsonSerializerOptions.Web);
 
         // Assert
-        user.Id.Should().NotBeEmpty();
-        responseData.Should().BeEquivalentTo(expected);
-        var userExists = await Context.Users.AnyAsync(x => x.Id == user.Id, TestContext.Current.CancellationToken);
+        responseData!.Data!.User!.Delete.Should().BeEquivalentTo(expected);
+
+        var userExists = await Context.Users.AnyAsync(
+            x => x.Id == user.Id, 
+            TestContext.Current.CancellationToken);
+        
         userExists.Should().BeFalse();
     }
 
