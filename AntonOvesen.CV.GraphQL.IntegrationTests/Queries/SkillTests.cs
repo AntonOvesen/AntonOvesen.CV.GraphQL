@@ -57,6 +57,18 @@ public class SkillTests(ApiWebApplicationFactory factory) : TestBase(factory)
         result.Should().BeEquivalentTo(expected);
     }
 
+    [Fact]
+    public async Task SkillCreate_ValidRequest_CreatesSkill()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task SkillDelete_SkillExists_DeletesSkillFromDatabase()
+    {
+        throw new NotImplementedException();
+    }
+
     #region Models
 
     public record GraphQLSkillsResponse

@@ -49,6 +49,18 @@ public class InstitutionTests(ApiWebApplicationFactory factory) : TestBase(facto
         result.Should().BeEquivalentTo(expected);
     }
 
+    [Fact]
+    public async Task InstitutionCreate_ValidRequest_CreatesInstitution()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task InstitutionDelete_InstitutionExists_DeletesInstitutionFromDatabase() 
+    {  
+        throw new NotImplementedException(); 
+    }
+
     #region Models
 
     public record GraphQLInstitutionsResponse

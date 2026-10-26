@@ -59,6 +59,18 @@ public class ProjectTests(ApiWebApplicationFactory factory) : TestBase(factory)
         result.Should().BeEquivalentTo(expected);
     }
 
+    [Fact]
+    public async Task ProjectCreate_ValidRequest_CreatesProject()
+    {
+        throw new NotImplementedException();
+    }
+
+    [Fact]
+    public async Task ProjectDelete_ProjectExists_DeletesProjectFromDatabase()
+    {
+        throw new NotImplementedException();
+    }
+
     #region Models
 
     public record GraphQLProjectsResponse
