@@ -25,5 +25,6 @@ public class CVContext : DbContext
         modelBuilder.Entity<User>().HasMany(x => x.Companies).WithOne(x => x.User).HasForeignKey(x => x.UserId);
 
         modelBuilder.Entity<Education>().HasOne(x => x.Institution);
+        modelBuilder.Entity<Skill>().Property(x => x.Title).IsRequired(true);
     }
 }

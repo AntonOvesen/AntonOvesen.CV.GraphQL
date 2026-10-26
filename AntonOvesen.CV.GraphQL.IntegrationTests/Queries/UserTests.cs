@@ -257,6 +257,9 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
     create(user: $userData) {
       id
       firstName
+      lastName
+      email
+      phone { number countryCode }
     }
   }
 }",
@@ -273,7 +276,7 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
 
         // Assert
         responseData!.Data!.User!.Create!.Id.Should().NotBeEmpty();
-        responseData.Data.User.Create.FirstName.Should().Be(userRequest.FirstName);
+        responseData.Data.User.Create.Should().BeEquivalentTo(userRequest);
 
         var userInDatabase = await Context.Users.FirstOrDefaultAsync(x => x.Id == responseData.Data.User.Create.Id, TestContext.Current.CancellationToken);
         userInDatabase.Should().BeEquivalentTo(userRequest);
@@ -292,6 +295,12 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         {
             FirstName = "Simon",
             LastName = "Simonsen",
+            Email = "email",
+            Phone = new Phone
+            {
+                CountryCode = "+45",
+                Number = "00000000"
+            },
             Skills = [skill]
         };
 
@@ -304,25 +313,22 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
   user {{
     delete(id: ""{user.Id}"") {{
       id
+      firstName
       lastName
+      email
+      phone {{ countryCode number }}
     }}
   }}
 }}"
         };
 
-        var expected = new GraphQLResponse<GraphQLDataUser<DataUserDelete>>
+        var expected = new
         {
-            Data = new GraphQLDataUser<DataUserDelete>
-            {
-                User = new DataUserDelete
-                {
-                    Delete = new User
-                    {
-                        Id = user.Id,
-                        LastName = user.LastName
-                    }
-                }
-            }
+            user.Id,
+            user.FirstName,
+            user.LastName,
+            user.Email,
+            user.Phone
         };
 
         // Act
@@ -334,9 +340,12 @@ public class UserTests(ApiWebApplicationFactory factory) : TestBase(factory)
         var responseData = JsonSerializer.Deserialize<GraphQLResponse<GraphQLDataUser<DataUserDelete>>>(responseString, JsonSerializerOptions.Web);
 
         // Assert
-        user.Id.Should().NotBeEmpty();
-        responseData.Should().BeEquivalentTo(expected);
-        var userExists = await Context.Users.AnyAsync(x => x.Id == user.Id, TestContext.Current.CancellationToken);
+        responseData!.Data!.User!.Delete.Should().BeEquivalentTo(expected);
+
+        var userExists = await Context.Users.AnyAsync(
+            x => x.Id == user.Id, 
+            TestContext.Current.CancellationToken);
+        
         userExists.Should().BeFalse();
     }
 
